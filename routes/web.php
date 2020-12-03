@@ -18,3 +18,11 @@ $router->get(
         'as'   => 'main-home'
     ]
 );
+
+$router->get(
+    '/recipes',
+    [
+        'uses' => 'RecipesController@list',
+        'as'   => 'recipes-list'
+    ]
+);
