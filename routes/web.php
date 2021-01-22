@@ -34,3 +34,19 @@ $router->get(
         'as'   => 'categories-list'
     ]
 );
+
+$router->get(
+    '/users',
+    [
+        'uses' => 'UsersController@list',
+        'as'   => 'user-list'
+    ]
+);
+
+$router->post(
+    '/users/new',
+    [
+        'uses' => 'UsersController@list',
+        'as'   => 'user-add'
+    ]
+);
