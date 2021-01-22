@@ -26,3 +26,11 @@ $router->get(
         'as'   => 'recipes-list'
     ]
 );
+
+$router->get(
+    '/categories',
+    [
+        'uses' => 'CategoriesController@list',
+        'as'   => 'categories-list'
+    ]
+);
