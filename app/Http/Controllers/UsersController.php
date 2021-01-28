@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class UsersController extends Controller
 
@@ -15,22 +16,43 @@ class UsersController extends Controller
         return response()->json($usersList);
     }
 
-    public function create(Request $request)
+    public function register(Request $request)
     {
-        $name = $request->name;
-        $email = $request->email;
-        $password = $request->password;
-        $pseudo = $request->pseudo;
-
-        $user = new User([
-            "name" => $name,
-            "email" => $email,
-            "password" => $password,
-            "pseudo" => $pseudo,
+        //validate incoming request
+        $this->validate($request, [
+            'name' => 'required|string',
+            'email' => 'required|string|unique:users',
+            'password' => 'required|string',
+            'pseudo' => 'required|string',
         ]);
-        $user->save();
+        try {
+            $name = $request->name;
+            $email = $request->email;
+            $password = $request->password;
+            $password_hash = password_hash($password, PASSWORD_DEFAULT);
+            $pseudo = $request->pseudo;
 
-        return response()->json( $user->id, 200);
+            $user = new User([
+                "name" => $name,
+                "email" => $email,
+                "password" => $password_hash,
+                "pseudo" => $pseudo,
+            ]);
+
+            $user->save();
+
+            $credentials = $request->only(['email', 'password']);
+            $token = Auth::attempt($credentials);
+            return $this->respondWithToken($token);
+        }
+        // TODO
+        catch (\Exception $e) {
+            return response()->json([
+                'entity' => 'users',
+                'action' => 'create',
+                'result' => 'failed'
+            ], 409);
+        }
     }
     //
 }
