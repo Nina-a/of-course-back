@@ -40,7 +40,7 @@ class UsersController extends Controller
             ]);
 
             $user->save();
-
+            // Vérifie si la personne est bien enregistrer dans la BDD
             $credentials = $request->only(['email', 'password']);
             $token = Auth::attempt($credentials);
             return $this->respondWithToken($token);
