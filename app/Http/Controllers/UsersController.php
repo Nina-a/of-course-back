@@ -9,6 +9,11 @@ use Illuminate\Support\Facades\Auth;
 class UsersController extends Controller
 
 {
+    public function __construct()
+    {
+         $this->middleware('auth:api', ['except' => ['register', 'login']]);
+    }
+
     public function list()
     {
         $usersList = User::all();
@@ -26,6 +31,7 @@ class UsersController extends Controller
             'pseudo' => 'required|string',
         ]);
         try {
+
             $name = $request->name;
             $email = $request->email;
             $password = $request->password;
@@ -42,8 +48,9 @@ class UsersController extends Controller
             $user->save();
             // Vérifie si la personne est bien enregistrer dans la BDD
             $credentials = $request->only(['email', 'password']);
-            $token = Auth::attempt($credentials);
-            return $this->respondWithToken($token);
+            $isValid = Auth::attempt($credentials);
+            return $this->respondWithToken($isValid);
+
         }
         // TODO
         catch (\Exception $e) {
@@ -54,5 +61,23 @@ class UsersController extends Controller
             ], 409);
         }
     }
-    //
+
+    public function logout()
+    {
+
+
+        Auth:: logout();
+        // Reponds OK à l'utilisateur
+
+    }
+
+    public function login(Request $request)
+    {
+        $isValid = auth::attempt($request->only(['email', 'password']));
+        if ($isValid) {
+            return $this->respondWithToken($isValid);
+        }else{
+            return response()->json([], 403);
+        }
+    }
 }
