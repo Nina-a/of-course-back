@@ -11,22 +11,25 @@ class Cors
      */
     public function handle($request, Closure $next)
     {
-        // J'exécute le traitement de la requête et je récupère la réponse générée
-        $response = $next($request);
+        $headers = [
+            'Access-Control-Allow-Origin'      => '*',
+            'Access-Control-Allow-Methods'     => 'POST, GET, OPTIONS, PUT, DELETE',
+            'Access-Control-Allow-Credentials' => 'true',
+            'Access-Control-Max-Age'           => '86400',
+            'Access-Control-Allow-Headers'     => 'Content-Type, Authorization, X-Requested-With'
+        ];
 
-        // Si la méthode de la requête est OPTIONS, je surchage la réponse (405 Method Not Allowed) de Lumen
-        if ($request->getMethod() === 'OPTIONS') {
-            $response = response('', 200);
+        if ($request->isMethod('OPTIONS'))
+        {
+            return response()->json('{"method":"OPTIONS"}', 200, $headers);
         }
 
-        // J'ajoute les en-têtes de réponse de CORS
-        $response
-            ->header('Access-Control-Allow-Origin', '*')
-            ->header('Access-Control-Allow-Methods', 'GET, POST, PUT, PATCH, DELETE')
-            ->header('Access-Control-Allow-Headers', 'Content-Type');
-        ;
+        $response = $next($request);
+        foreach($headers as $key => $value)
+        {
+            $response->header($key, $value);
+        }
 
-        // Je retourne la réponse modifiée
         return $response;
     }
 }

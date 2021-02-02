@@ -34,3 +34,35 @@ $router->get(
         'as'   => 'categories-list'
     ]
 );
+
+$router->get(
+    '/users',
+    [
+        'uses' => 'UsersController@list',
+        'as'   => 'user-list'
+    ]
+);
+
+$router->post(
+    '/users/new',
+    [
+        'uses' => 'UsersController@register',
+        'as'   => 'user-register'
+    ]
+);
+
+$router->post(
+    '/users/logout',
+    [
+        'uses' => 'UsersController@logout',
+        'as'   => 'user-logout'
+    ]
+);
+
+$router->post(
+    '/users/login',
+    [
+        'uses' => 'UsersController@login',
+        'as'   => 'user-login'
+    ]
+);
