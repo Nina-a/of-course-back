@@ -65,7 +65,6 @@ class UsersController extends Controller
     public function logout()
     {
 
-
         Auth:: logout();
         // Reponds OK à l'utilisateur
 

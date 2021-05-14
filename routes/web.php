@@ -19,6 +19,7 @@ $router->get(
     ]
 );
 
+// ===================================== RECIPES =======================
 $router->get(
     '/recipes',
     [
@@ -27,13 +28,33 @@ $router->get(
     ]
 );
 
+$router->post(
+    '/recipes/add',
+    [
+        'uses' => 'RecipesController@add',
+        'as'   => 'recipes-add'
+    ]
+);
+
+// ===================================== INGREDIENTS ==========================
 $router->get(
+    '/ingredients',
+    [
+        'uses' => 'IngredientsController@list',
+        'as'   => 'ingredients-list'
+    ]
+);
+// ===================================== CATEGORIES =======================
+
+$router->post(
     '/categories',
     [
         'uses' => 'CategoriesController@list',
         'as'   => 'categories-list'
     ]
 );
+
+// ===================================== USERS =======================
 
 $router->get(
     '/users',
@@ -66,3 +87,5 @@ $router->post(
         'as'   => 'user-login'
     ]
 );
+
+
