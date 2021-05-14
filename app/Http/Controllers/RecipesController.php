@@ -12,14 +12,6 @@ class RecipesController extends Controller
     {
         $recipesList = Recipe::with(['categories', 'ingredients'])->get();
 
-
-        // foreach ($recipesList as $recipe) {
-        //     // foreach ($recipe->categories as $category) {
-        //     // }
-        //     foreach ($recipe->ingredients as $ingredient) {
-        //     }
-        // }
-
         return response()->json($recipesList);
     }
 
@@ -54,6 +46,7 @@ class RecipesController extends Controller
         //$recipe->categories()->attach(1); le 1 correspond aux entrées
         $recipe->categories()->attach(1);
         // ici il faudra donner la quantité nécessaire pour chaque ingrédient
+        // TODO a faire autant de fois que nécessaire pour les différents ingrédients
         $recipe->ingredientsFull()->attach(
             45,
             ['quantity' => 1]);

@@ -36,6 +36,14 @@ $router->post(
     ]
 );
 
+// ===================================== INGREDIENTS ==========================
+$router->get(
+    '/ingredients',
+    [
+        'uses' => 'IngredientsController@list',
+        'as'   => 'ingredients-list'
+    ]
+);
 // ===================================== CATEGORIES =======================
 
 $router->post(
